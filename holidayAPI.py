@@ -6,7 +6,9 @@ url = "https://www.calend.ru/holidays/"
 
 
 def getTodayDate():
-    # get today date in format yyyy-mm-dd
+    '''
+    Returns today's date in format "YYYY-MM-DD"
+    '''
     today = datetime.date.today()
     return today.strftime("%Y-%m-%d")
 

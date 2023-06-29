@@ -10,7 +10,7 @@ openai.api_key = os.environ.get('OPENAI_TOKEN')
 openai.organization = os.environ.get('OPENAI_ORG')
 
 app = flask.Flask(__name__)
-CORS(app)
+# CORS(app)
 app.config["JSON_AS_ASCII"] = False
 app.config["JSONIFY_MIMETYPE"] = "application/json; charset=utf-8"
 
@@ -19,6 +19,7 @@ app.config["JSONIFY_MIMETYPE"] = "application/json; charset=utf-8"
 def index():
     args = flask.request.args
     response = {}
+    response.headers.add('Access-Control-Allow-Origin', '*')
     if 'date' in args:
         date = args['date']
         response = flask.jsonify(holidayAPI.getHoliday(date))
@@ -33,6 +34,7 @@ def index():
 def image():
     args = flask.request.args
     response = {}
+    response.headers.add('Access-Control-Allow-Origin', '*')
     if 'prompt' in args:
         prompt = args['prompt']
         image = openai.Image.create(
@@ -52,6 +54,7 @@ def image():
 def greeting():
     args = flask.request.args
     response = {}
+    response.headers.add('Access-Control-Allow-Origin', '*')
     if 'holiday' in args:
         holiday = args['holiday']
         prompt = f"Напиши поздравление моему другу, поздравь его с днем {holiday}. Сделай его смешным и запоминающимся."

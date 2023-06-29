@@ -1,4 +1,5 @@
 import flask
+from flask_cors import CORS
 import holidayAPI
 from dotenv import load_dotenv
 import os
@@ -9,6 +10,7 @@ openai.api_key = os.environ.get('OPENAI_TOKEN')
 openai.organization = os.environ.get('OPENAI_ORG')
 
 app = flask.Flask(__name__)
+CORS(app)
 app.config["JSON_AS_ASCII"] = False
 app.config["JSONIFY_MIMETYPE"] = "application/json; charset=utf-8"
 

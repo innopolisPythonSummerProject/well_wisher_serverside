@@ -19,7 +19,6 @@ app.config["JSONIFY_MIMETYPE"] = "application/json; charset=utf-8"
 def index():
     args = flask.request.args
     response = {}
-    response.headers.add('Access-Control-Allow-Origin', '*')
     if 'date' in args:
         date = args['date']
         response = flask.jsonify(holidayAPI.getHoliday(date))
@@ -27,6 +26,7 @@ def index():
         response = flask.jsonify(holidayAPI.getHoliday())
     print(response)
     response.status_code = 200
+    response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
 
@@ -34,7 +34,6 @@ def index():
 def image():
     args = flask.request.args
     response = {}
-    response.headers.add('Access-Control-Allow-Origin', '*')
     if 'prompt' in args:
         prompt = args['prompt']
         image = openai.Image.create(
@@ -44,9 +43,11 @@ def image():
         )
         response = flask.jsonify(image)
         response.status_code = 200
+        response.headers.add('Access-Control-Allow-Origin', '*')
         return response
     else:
         response.status_code = 400
+        response.headers.add('Access-Control-Allow-Origin', '*')
         return response
 
 
@@ -54,7 +55,6 @@ def image():
 def greeting():
     args = flask.request.args
     response = {}
-    response.headers.add('Access-Control-Allow-Origin', '*')
     if 'holiday' in args:
         holiday = args['holiday']
         prompt = f"Напиши поздравление моему другу, поздравь его с днем {holiday}. Сделай его смешным и запоминающимся."
@@ -65,6 +65,7 @@ def greeting():
         )
         response = flask.jsonify(greeting)
         response.status_code = 200
+        response.headers.add('Access-Control-Allow-Origin', '*')
         return response
     else:
         response.status_code = 400

@@ -16,11 +16,11 @@ app.config["JSONIFY_MIMETYPE"] = "application/json; charset=utf-8"
 
 
 def insert_holiday(holiday, kitty, sparkles):
-    if kitty == 'true':
+    if kitty == 'true' or kitty == 'True':
         kitty = 'with kitties'
     else:
         kitty = ''
-    if sparkles == 'true':
+    if sparkles == 'true' or sparkles == 'True':
         sparkles = 'with sparkles'
     else:
         sparkles = ''

@@ -15,7 +15,15 @@ app.config["JSON_AS_ASCII"] = False
 app.config["JSONIFY_MIMETYPE"] = "application/json; charset=utf-8"
 
 
-def insert_holiday(holiday):
+def insert_holiday(holiday, kitty, sparkles):
+    if kitty == 'true':
+        kitty = 'with kitties'
+    else:
+        kitty = ''
+    if sparkles == 'true':
+        sparkles = 'with sparkles'
+    else:
+        sparkles = ''
     return f'''
 Stable Diffusion is an AI art generation model similar to DALLE-2.
 Below is a list of prompts that can be used to generate images with Stable Diffusion:
@@ -31,7 +39,7 @@ Below is a list of prompts that can be used to generate images with Stable Diffu
 
 I want you to write me a list of detailed prompts exactly about the idea written after IDEA. Follow the structure of the example prompts. This means a very short description of the scene, followed by modifiers divided by commas to alter the mood, style, lighting, and more.
 
-IDEA: cover for celebrating {holiday} picture 
+IDEA: cover for celebrating {holiday} picture {kitty}, {sparkles}
 
 Give the answer in one Prompt without too much information
     '''
@@ -58,9 +66,11 @@ def image():
     response = {}
     if 'prompt' in args:
         prompt = args['prompt']
+        kittyOption = args['kitty']
+        sparklesOption = args['Sparkles']
         prompt = openai.Completion.create(
             model="text-davinci-003",
-            prompt=insert_holiday(prompt),
+            prompt=insert_holiday(prompt, kittyOption, sparklesOption),
             max_tokens=512,
         )["choices"][0]["text"]
         print(prompt)

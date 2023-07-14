@@ -5,8 +5,8 @@ import os
 import openai
 
 load_dotenv()
-openai.api_key = os.environ.get('OPENAI_TOKEN')
-openai.organization = os.environ.get('OPENAI_ORG')
+openai.api_key = os.environ.get("OPENAI_TOKEN")
+openai.organization = os.environ.get("OPENAI_ORG")
 
 app = flask.Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
@@ -25,15 +25,15 @@ def insert_holiday(holiday, kitty, sparkles):
     Returns:
     str: A string containing a list of detailed prompts for generating images with Stable Diffusion.
     """
-    if kitty == 'true' or kitty == 'True':
-        kitty = 'with kitties'
+    if kitty == "true" or kitty == "True":
+        kitty = "with kitties"
     else:
-        kitty = ''
-    if sparkles == 'true' or sparkles == 'True':
-        sparkles = 'with sparkles'
+        kitty = ""
+    if sparkles == "true" or sparkles == "True":
+        sparkles = "with sparkles"
     else:
-        sparkles = ''
-    return f'''
+        sparkles = ""
+    return f"""
 Stable Diffusion is an AI art generation model similar to DALLE-2.
 Below is a list of prompts that can be used to generate images with Stable Diffusion:
 
@@ -51,10 +51,10 @@ I want you to write me a list of detailed prompts exactly about the idea written
 IDEA: cover for celebrating {holiday} picture {kitty}, {sparkles}
 
 Give the answer in one Prompt without too much information
-'''
+"""
 
 
-@app.route('/holiday', methods=["GET"])
+@app.route("/holiday", methods=["GET"])
 def index():
     """
     Returns a JSON response containing information about a holiday based on the date provided in the request arguments.
@@ -69,8 +69,8 @@ def index():
     args = flask.request.args
     response = {}
     # If there is a date in the arguments, get the holiday for that date
-    if 'date' in args:
-        date = args['date']
+    if "date" in args:
+        date = args["date"]
         # Create a JSON response with the holiday information
         response = flask.jsonify(holidayAPI.getHoliday(date))
     # If there is no date in the arguments, get the holiday for the current date
@@ -78,11 +78,11 @@ def index():
         response = flask.jsonify(holidayAPI.getHoliday())
     print(response)
     response.status_code = 200
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
 
-@app.route('/image', methods=["GET"])
+@app.route("/image", methods=["GET"])
 def image():
     """
     Generates an image based on a prompt using OpenAI's text-davinci-003 model and Image API.
@@ -92,13 +92,13 @@ def image():
     """
     args = flask.request.args
     response = {}
-    if 'prompt' in args:
+    if "prompt" in args:
         # Get the prompt from the arguments
-        prompt = args['prompt']
+        prompt = args["prompt"]
         # Get the kitty option from the arguments
-        kitty_option = args['kitty']
+        kitty_option = args["kitty"]
         # Get the sparkles option from the arguments
-        sparkles_option = args['Sparkles']
+        sparkles_option = args["Sparkles"]
         # Generate a completion using OpenAI's text-davinci-003 model
         prompt = openai.Completion.create(
             model="text-davinci-003",
@@ -116,16 +116,16 @@ def image():
         # Create a JSON response with the generated image
         response = flask.jsonify(image)
         response.status_code = 200
-        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add("Access-Control-Allow-Origin", "*")
         return response
     else:
         # If there is no prompt in the arguments, return a 400 error
         response.status_code = 400
-        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add("Access-Control-Allow-Origin", "*")
         return response
 
 
-@app.route('/greeting', methods=["GET"])
+@app.route("/greeting", methods=["GET"])
 def greeting():
     """
     Generates a funny and memorable greeting message for a friend's holiday.
@@ -135,9 +135,9 @@ def greeting():
     """
     args = flask.request.args
     response = {}
-    if 'holiday' in args:
+    if "holiday" in args:
         # Get the holiday from the arguments
-        holiday = args['holiday']
+        holiday = args["holiday"]
         # Generate a completion using OpenAI's text-davinci-003 model
         prompt = f"Напиши поздравление моему другу, поздравь его с днем {holiday}. Сделай его смешным и запоминающимся."
         greeting = openai.Completion.create(
@@ -148,7 +148,7 @@ def greeting():
         # Create a JSON response with the generated greeting
         response = flask.jsonify(greeting)
         response.status_code = 200
-        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add("Access-Control-Allow-Origin", "*")
         return response
     # If there is no holiday in the arguments, return a 400 error
     else:
@@ -157,5 +157,5 @@ def greeting():
 
 
 # Run the app
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
